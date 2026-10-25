@@ -109,6 +109,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .start b { font-family: var(--font-display); font-size: 1.2rem; }
 .start .n { font-family: var(--font-mono); font-size: var(--step--1); color: var(--accent); }
 
+/* Диаграмма сроков этапов: шкала 24 недели */
+.gantt { display: grid; gap: 7px; }
+.g-row { display: grid; grid-template-columns: minmax(150px, 240px) minmax(0, 1fr) 84px; gap: 12px; align-items: center; }
+.g-name { font-size: 0.9rem; min-width: 0; }
+.g-name b { font-family: var(--font-mono); color: var(--accent); display: inline-block; min-width: 2.2em; }
+.g-track { position: relative; height: 18px; background-image: repeating-linear-gradient(to right, var(--rule) 0 1px, transparent 1px 16.6667%); border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+.g-bar, .g-ext { position: absolute; top: 3px; height: 12px; }
+.g-bar { background: var(--accent); }
+.g-ext { background: repeating-linear-gradient(45deg, color-mix(in oklab, var(--accent) 45%, var(--sheet)) 0 3px, transparent 3px 6px); box-shadow: inset 0 0 0 1px var(--accent); }
+.g-dur { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); text-align: right; }
+.g-ticks { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); }
+.start em { font-style: normal; font-weight: 600; }
+@media (max-width: 640px) { .g-row { grid-template-columns: 1fr; gap: 3px; } .g-dur { text-align: left; } .g-axis > span { display: none; } }
+
 /* Вкладка 2 — сцена */
 .live-head { display: grid; gap: 10px; }
 .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 12px 0; }
@@ -360,13 +374,31 @@ pre.code .n { font-weight: 600; }
   </div>
 
   <div class="block">
-    <h2>С чего начнём</h2>
+    <h2>Этапы: каждый можно увидеть и потрогать</h2>
+    <p>Каждый этап заканчивается работающей вещью и приёмкой по заранее согласованным критериям. Остановиться можно после любого этапа — результат останется у компании. До системы, которая закрывает главные процессы, — около 4–6 месяцев.</p>
+    <div class="figure">
+      <div class="figcap"><span>Сроки этапов, недели</span><span>сплошная полоса — быстрый вариант, штриховка — запас</span></div>
+      <div class="gantt" role="img" aria-label="Сроки: этап 1 — 3–4 недели; 2а — 3–4; 2б — 3; этап 3 — 3–5; 4а — 3–5; 4б — 2–3; дальше — пакеты процессов по 2–4 недели. Всего около 17–24 недель.">
+        <div class="g-row"><span class="g-name"><b>1</b>Спросить компанию</span><div class="g-track"><i class="g-bar" style="left:0;width:12.5%"></i><i class="g-ext" style="left:12.5%;width:4.17%"></i></div><span class="g-dur">3–4 нед.</span></div>
+        <div class="g-row"><span class="g-name"><b>2а</b>Договорённости: тестовый чат</span><div class="g-track"><i class="g-bar" style="left:12.5%;width:12.5%"></i><i class="g-ext" style="left:25%;width:4.17%"></i></div><span class="g-dur">3–4 нед.</span></div>
+        <div class="g-row"><span class="g-name"><b>2б</b>Договорённости: живой пилот</span><div class="g-track"><i class="g-bar" style="left:25%;width:12.5%"></i></div><span class="g-dur">3 нед.</span></div>
+        <div class="g-row"><span class="g-name"><b>3</b>Проблемы не повторяются</span><div class="g-track"><i class="g-bar" style="left:37.5%;width:12.5%"></i><i class="g-ext" style="left:50%;width:8.33%"></i></div><span class="g-dur">3–5 нед.</span></div>
+        <div class="g-row"><span class="g-name"><b>4а</b>Заказы с фактами из 1С</span><div class="g-track"><i class="g-bar" style="left:50%;width:12.5%"></i><i class="g-ext" style="left:62.5%;width:8.33%"></i></div><span class="g-dur">3–5 нед.</span></div>
+        <div class="g-row"><span class="g-name"><b>4б</b>Решения и сроки клиентам</span><div class="g-track"><i class="g-bar" style="left:62.5%;width:8.33%"></i><i class="g-ext" style="left:70.83%;width:4.17%"></i></div><span class="g-dur">2–3 нед.</span></div>
+        <div class="g-row"><span class="g-name"><b>→</b>Пакеты процессов</span><div class="g-track"><i class="g-ext" style="left:75%;width:25%"></i></div><span class="g-dur">по 2–4 нед.</span></div>
+        <div class="g-row g-axis"><span></span><div class="g-ticks"><span>0</span><span>4</span><span>8</span><span>12</span><span>16</span><span>20</span><span>24</span></div><span></span></div>
+      </div>
+    </div>
     <ol class="start">
-      <li><span class="n">шаг 1 · 2–3 недели</span><b>Справочная</b><span>По уже готовым материалам. Польза сразу для всех и почти без риска; заодно видно, где в материалах дыры.</span></li>
-      <li><span class="n">шаг 2 · пилот 4–6 недель</span><b>Договорённости</b><span>В одном подразделении: реестр, секретарь, диспетчер, утренняя сводка руководителю.</span></li>
-      <li><span class="n">шаг 3 · 3–4 недели</span><b>Повторяющиеся проблемы</b><span>Заявки и отклонения на той же механике и первая ночная работа аналитика.</span></li>
+      <li><span class="n">этап 1 · 3–4 недели</span><b>Спросить компанию</b><span><em>Потрогать:</em> бот в Telegram отвечает по регламентам со ссылкой или честным «не знаем».</span><span><em>Принимаем:</em> на ваших 50 вопросах — не меньше 80% верных ответов со ссылкой.</span></li>
+      <li><span class="n">этап 2а · 3–4 недели</span><b>Договорённости: тестовый чат</b><span><em>Потрогать:</em> обещания в чате становятся карточками, приходят напоминания и утренняя сводка.</span><span><em>Принимаем:</em> ваши 10 сценариев проходят вживую от обещания до закрытия.</span></li>
+      <li><span class="n">этап 2б · 3 недели</span><b>Договорённости: живой пилот</b><span><em>Потрогать:</em> то же в рабочем чате одного подразделения, на реальных данных.</span><span><em>Принимаем:</em> итоги трёх недель, разбор реальных дел и опрос участников.</span></li>
+      <li><span class="n">этап 3 · 3–5 недель</span><b>Проблемы не повторяются</b><span><em>Потрогать:</em> заявки и отклонения в чате получают владельца; утром — находки ночного аналитика.</span><span><em>Принимаем:</em> каждая заявка получает владельца в течение дня, половина находок — «полезно».</span></li>
+      <li><span class="n">этап 4а · 3–5 недель</span><b>Заказы с фактами из 1С</b><span><em>Потрогать:</em> «что с заказом 117?» — ответ из 1С и дел, каждая цифра со ссылкой.</span><span><em>Принимаем:</em> 20 реальных заказов сверяем с 1С вживую.</span></li>
+      <li><span class="n">этап 4б · 2–3 недели</span><b>Решения и сроки клиентам</b><span><em>Потрогать:</em> карточка решения с вариантами и предупреждение, что срок клиенту под угрозой.</span><span><em>Принимаем:</em> одно реальное решение проходит полный круг.</span></li>
+      <li><span class="n">дальше · по 2–4 недели</span><b>Пакеты процессов</b><span><em>Потрогать:</em> по 2–4 процесса из 36 в пакете, порядок — по боли.</span><span><em>Принимаем:</em> в том же формате — демонстрация и критерии на каждый пакет.</span></li>
     </ol>
-    <p class="note">Остальные процессы подключаются как «рецепты» на то же ядро — это настройки, а не новые программы. Сроки — ориентир до ответов на вопросы ниже.</p>
+    <p class="note">Перед этапом 4 — разведка 1С на 2–3 дня: её срок зависит от конфигурации учёта. Сроки — ориентир до ответов на вопросы ниже.</p>
   </div>
 
   <div class="block">
@@ -771,12 +803,13 @@ pre.code .n { font-weight: 600; }
       <div class="sheet-head"><span class="sheet-no">ЛИСТ 10</span><h2>Порядок внедрения</h2></div>
       <p class="note">Каждый этап полезен сам по себе. Сроки — ориентир до ответов на вопросы с листа 11.</p>
       <ol class="stages">
-        <li><span class="no">Э0</span><div><b>Сквозной прогон</b><p>Реплика в Telegram → карточка → «да» → напоминание → закрытие с подтверждением. Каждая часть в простейшем виде, но вся цепочка работает с первого дня.</p></div><span class="dur">1–2 недели</span></li>
-        <li><span class="no">Э1</span><div><b>Справочная — 33</b><p>Ответы о правилах, процессах и ответственности по материалам проекта, со ссылкой и честным «не знаем». Только чтение, риск минимальный.</p></div><span class="dur">2–3 недели</span></li>
-        <li><span class="no">Э2</span><div><b>Договорённости — 02, пилот</b><p>Секретарь, реестр, внимание, утренняя сводка руководителю в одном подразделении.</p></div><span class="dur">4–6 недель</span></li>
-        <li><span class="no">Э3</span><div><b>Случаи и повторы — 36, 14, 34, 32</b><p>Сигнал → владелец → мера → проверка. Первый ночной срез аналитика: похожие случаи.</p></div><span class="dur">3–4 недели</span></li>
-        <li><span class="no">Э4</span><div><b>Решения и учёт — 01, 03, затем 06, 10, 12, 19, 25</b><p>Третий род дела и чтение из 1С — когда ядро проверено на людях.</p></div><span class="dur">по процессам</span></li>
-        <li><span class="no">далее</span><div><b>Остальные процессы — рецептами</b><p>Порядок — по боли: где чаще всего срывается.</p></div><span class="dur">—</span></li>
+        <li><span class="no">1</span><div><b>«Спросить компанию» — 33</b><p>Справочная по материалам проекта со ссылкой и честным «не знаем», плюс демонстрационный круг договорённости в тестовом чате. Ядро, шлюз моделей, библиотека с поиском по смыслу.</p></div><span class="dur">3–4 недели</span></li>
+        <li><span class="no">2а</span><div><b>«Договорённости»: тестовый чат — 02</b><p>Ядро дел, Секретарь, «Верно», Внимание, утренняя сводка. Сценарии заказчика проходят от обещания до закрытия.</p></div><span class="dur">3–4 недели</span></li>
+        <li><span class="no">2б</span><div><b>«Договорённости»: живой пилот</b><p>Рабочий чат одного подразделения, реальные данные, еженедельная настройка порогов.</p></div><span class="dur">3 недели</span></li>
+        <li><span class="no">3</span><div><b>«Проблемы не повторяются» — 36, 14, 34, 32, 35</b><p>Сигнал → владелец → мера → проверка. Первый ночной срез аналитика — похожие случаи.</p></div><span class="dur">3–5 недель</span></li>
+        <li><span class="no">4а</span><div><b>«Заказы с фактами из 1С» — 06, 10, 12, 19, 25</b><p>Чтение из 1С и ответы по заказу со ссылками. Перед подэтапом — разведка 1С на 2–3 дня.</p></div><span class="dur">3–5 недель</span></li>
+        <li><span class="no">4б</span><div><b>«Решения и сроки клиентам» — 01, 03</b><p>Карточка решения со сверкой ожидаемого и фактического; предупреждение, что срок клиенту под угрозой.</p></div><span class="dur">2–3 недели</span></li>
+        <li><span class="no">далее</span><div><b>Пакеты процессов</b><p>Остальные процессы — рецептами, по 2–4 в пакете. Порядок — по боли.</p></div><span class="dur">2–4 недели на пакет</span></li>
       </ol>
     </section>
 
