@@ -52,7 +52,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .masthead { padding-block: 18px 0; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .masthead strong { font-family: var(--font-display); font-size: 1.35rem; }
 .tabbar-band { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 2px solid var(--ink); }
-.tabbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-block: 12px; }
+.tabbar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding-block: 12px; }
 .tab { font: inherit; text-align: left; cursor: pointer; background: var(--sheet); color: var(--ink); border: 2px solid var(--ink); padding: 10px 14px 12px; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; align-items: center; transition: transform .15s ease, background-color .15s ease, border-color .15s ease; position: relative; min-width: 0; }
 .tab:hover { border-color: var(--accent); transform: translateY(-2px); }
 .tab .tn { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: 2.2rem; line-height: 1; color: var(--accent); }
@@ -63,7 +63,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tab .live { position: absolute; top: 10px; right: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--danger); box-shadow: 0 0 0 0 var(--danger); animation: ping 1.6s infinite; }
 @keyframes ping { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--danger) 70%, transparent); } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 @media (max-width: 640px) {
-  .tabbar { gap: 6px; }
+  .tabbar { gap: 6px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tab { grid-template-columns: 1fr; padding: 8px 8px 10px; }
   .tab .tn { grid-row: auto; font-size: 1.3rem; }
   .tab .tt { font-size: 1.05rem; }
@@ -108,6 +108,16 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .start li { padding: 12px 14px 14px; border-right: 1px solid var(--rule); border-top: 3px solid var(--accent); background: var(--sheet); display: grid; gap: 4px; align-content: start; }
 .start b { font-family: var(--font-display); font-size: 1.2rem; }
 .start .n { font-family: var(--font-mono); font-size: var(--step--1); color: var(--accent); }
+
+/* Вкладка «36 процессов» — карточки видов */
+.kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+.kind { padding: 16px 16px 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--sheet); display: grid; gap: 10px; align-content: start; min-width: 0; }
+.kind header { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.kind .kl { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1; color: var(--accent); }
+.kind h3 { font-size: 1.25rem; flex: 1 1 auto; min-width: 0; }
+.kind .ks { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); border: 1px solid var(--rule); padding: 1px 6px; }
+.kind p { font-size: 0.9375rem; }
+.chip.core6 { border-width: 2px; font-weight: 600; }
 
 /* Диаграмма сроков этапов: шкала 24 недели */
 .gantt { display: grid; gap: 7px; }
@@ -287,8 +297,9 @@ pre.code .n { font-weight: 600; }
 <div class="tabbar-band">
   <div class="wrap tabbar" role="tablist" aria-label="Разделы">
     <button class="tab" role="tab" id="tab-short" aria-controls="short" aria-selected="true" type="button"><span class="tn">1</span><span class="tt">Коротко</span><span class="ts">видение за три минуты</span></button>
-    <button class="tab" role="tab" id="tab-live" aria-controls="live" aria-selected="false" type="button" tabindex="-1"><span class="tn">2</span><span class="tt">Как это живёт</span><span class="ts">анимация: выключайте роли</span><i class="live" aria-hidden="true"></i></button>
-    <button class="tab" role="tab" id="tab-detail" aria-controls="detail" aria-selected="false" type="button" tabindex="-1"><span class="tn">3</span><span class="tt">Подробно</span><span class="ts">матрица, схемы, оглавление</span></button>
+    <button class="tab" role="tab" id="tab-processes" aria-controls="processes" aria-selected="false" type="button" tabindex="-1"><span class="tn">2</span><span class="tt">36 процессов</span><span class="ts">семь видов на одном ядре</span></button>
+    <button class="tab" role="tab" id="tab-live" aria-controls="live" aria-selected="false" type="button" tabindex="-1"><span class="tn">3</span><span class="tt">Как это живёт</span><span class="ts">анимация: выключайте роли</span><i class="live" aria-hidden="true"></i></button>
+    <button class="tab" role="tab" id="tab-detail" aria-controls="detail" aria-selected="false" type="button" tabindex="-1"><span class="tn">4</span><span class="tt">Подробно</span><span class="ts">матрица, схемы, оглавление</span></button>
   </div>
 </div>
 
@@ -425,7 +436,78 @@ pre.code .n { font-weight: 600; }
   </div>
 </section>
 
-<!-- ═════════ ВКЛАДКА 2 — КАК ЭТО ЖИВЁТ ═════════ -->
+<!-- ═════════ ВКЛАДКА 2 — 36 ПРОЦЕССОВ ═════════ -->
+<section class="wrap panel" id="processes" role="tabpanel" aria-labelledby="tab-processes" hidden>
+  <div class="hero">
+    <h1>36 процессов — семь видов</h1>
+    <p class="lede">Мы разобрали все 36 описаний. По устройству они делятся на семь видов: процессы одного вида касаются разных подразделений, но работают по одному алгоритму. Поэтому мы строим не 36 программ, а семь алгоритмов на одном ядре — и каждый процесс получает свои настройки.</p>
+  </div>
+
+  <div class="block">
+    <h2>Общий путь любого процесса</h2>
+    <ol class="start">
+      <li><span class="n">шаг 1</span><b>Повод</b><span>В первой версии человек явно просит — кнопкой или командой. Позже система сама замечает повод в переписке и протоколах и <em>переспрашивает</em>, а не решает за человека.</span></li>
+      <li><span class="n">шаг 2</span><b>Нет ли уже такого?</b><span>Поиск похожего по смыслу. Если есть — присоединяем, а не плодим копии. Растёт счётчик повторов: «об этом говорят часто» — сигнал для людей, а не автоматический приоритет.</span></li>
+      <li><span class="n">шаг 3</span><b>Что с похожим</b><span>Если похожее было — в каком оно состоянии: в работе, застряло, отложено, отклонено, забыто, завершено. От этого зависит, что делать дальше.</span></li>
+      <li><span class="n">шаг 4</span><b>Оформление</b><span>ИИ заполняет карточку и спрашивает недостающее. Делом она становится только после «Верно» человека.</span></li>
+      <li><span class="n">шаг 5</span><b>Жизнь</b><span>Напоминают только тому, от кого сейчас зависит дело, и только когда без него нельзя. Ночью ищутся повторы и застрявшее. Решают люди.</span></li>
+      <li><span class="n">шаг 6</span><b>Завершение</b><span>Подтверждением результата, а не отметкой. У отложенного всегда есть условие или дата возврата — ничего не превращается в забытый груз.</span></li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h2>Семь видов</h2>
+    <p class="note">Выделенная рамкой карточка процесса — эталон вида: на нём вид разобран подробно, остальные процессы описаны через отличия от него.</p>
+    <div class="kinds">
+      <article class="kind">
+        <header><span class="kl">А</span><h3>Выбор и пересмотр решений</h3><span class="ks">этап 4</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">01</span>Стратегические направления</span><span class="chip"><span class="k">03</span>Решения с учётом экономики</span><span class="chip"><span class="k">04</span>Проверка спроса</span><span class="chip"><span class="k">07</span>Продуктовые идеи</span><span class="chip"><span class="k">18</span>Общие ресурсы площадки</span><span class="chip"><span class="k">31</span>Подтверждение продукции</span></div>
+        <p>Предложение → нет ли похожего и в каком оно состоянии → вес «как часто об этом говорят» → страница оснований: факты отдельно от предположений, кто конкурирует за тех же людей → выбор руководства с условием пересмотра; отложенное — с условием возврата.</p>
+      </article>
+      <article class="kind">
+        <header><span class="kl">Б</span><h3>Внутренние договорённости</h3><span class="ks">этап 2</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">02</span>Рабочие договорённости</span><span class="chip"><span class="k">23</span>Освоение роли</span><span class="chip"><span class="k">26</span>Закрытие периода</span><span class="chip"><span class="k">35</span>Изменения до результата</span></div>
+        <p>«Сделаю к пятнице» → карточка: кто, кому, что, срок → «Верно» → напоминание исполнителю при угрозе срока → перенос только по согласию → закрытие только с результатом.</p>
+      </article>
+      <article class="kind">
+        <header><span class="kl">В</span><h3>Клиенты и поставщики</h3><span class="ks">после этапа 2</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">05</span>Клиент к заказу</span><span class="chip"><span class="k">06</span>Обязательства перед клиентом</span><span class="chip"><span class="k">11</span>Закупки</span><span class="chip"><span class="k">20</span>Доставка</span><span class="chip"><span class="k">21</span>Обращения клиентов</span></div>
+        <p>Карточка сделки: слова клиента отдельно от наших предположений → всегда согласованный следующий шаг → обещания вовне даёт только уполномоченный → заказ или отказ с причиной; повторяющиеся причины отказов видны.</p>
+      </article>
+      <article class="kind">
+        <header><span class="kl">Г</span><h3>Подтверждение фактами учёта</h3><span class="ks">этап 4</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">19</span>Готовность к отгрузке</span><span class="chip"><span class="k">10</span>Загрузка и сроки</span><span class="chip"><span class="k">12</span>Движение материалов</span><span class="chip"><span class="k">25</span>Денежные обязательства</span><span class="chip"><span class="k">27</span>Картина экономики</span></div>
+        <p>«Числится» и «есть на самом деле» — разные состояния → каждое подтверждается своим событием → ночная сверка с 1С → расхождение получает владельца → «готово» ставит правило, а не ИИ.</p>
+      </article>
+      <article class="kind">
+        <header><span class="kl">Д</span><h3>Знание и действующие версии</h3><span class="ks">этап 1</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">33</span>Ответ о работе компании</span><span class="chip"><span class="k">08</span>Конструкторская документация</span><span class="chip"><span class="k">09</span>Порядок изготовления</span><span class="chip"><span class="k">17</span>Оснастка и измерения</span><span class="chip"><span class="k">28</span>Действующие документы</span></div>
+        <p>Вопрос обычным языком → поиск только по действующему и только по положенному → ответ со ссылкой или честное «не знаем» → вопросы без ответа — в список дыр в регламентах.</p>
+      </article>
+      <article class="kind">
+        <header><span class="kl">Е</span><h3>Сигналы и повторяющиеся проблемы</h3><span class="ks">этап 3</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">36</span>Повторяющиеся проблемы</span><span class="chip"><span class="k">13</span>Выполнение работы</span><span class="chip"><span class="k">14</span>Препятствия в производстве</span><span class="chip"><span class="k">15</span>Дефекты и качество</span><span class="chip"><span class="k">16</span>Критичное оборудование</span><span class="chip"><span class="k">30</span>Опасные условия</span><span class="chip"><span class="k">32</span>Рабочие системы</span><span class="chip"><span class="k">34</span>Хозяйственные заявки</span></div>
+        <p>«Проблема: …» → опасное — сразу ответственному → повторные сообщения объединяются → владелец и следующий шаг → закрытие проверкой «стало лучше» → ночью видны повторы → разбор причин → изменение → проверка пользы.</p>
+      </article>
+      <article class="kind">
+        <header><span class="kl">Ж</span><h3>Строгие данные: люди, деньги, право</h3><span class="ks">отдельный пакет</span></header>
+        <div class="chips"><span class="chip core6"><span class="k">24</span>Труд и оплата</span><span class="chip"><span class="k">22</span>Подбор сотрудника</span><span class="chip"><span class="k">29</span>Юридические решения</span></div>
+        <p>Только явно и только уполномоченным → только внутри компании, без внешних сервисов → факты отдельно от впечатлений → решение установленным порядком → проверка последствий.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Почему это работает</h2>
+    <ul class="rules">
+      <li><b>Скелет — из ваших описаний</b>Во всех 36 одна последовательность: повод → основания → решение человека → сопровождение → подтверждение фактом → опыт.</li>
+      <li><b>Ваши требования — правила системы</b>Разделы «Что важно для нас» стали правилами, а не пожеланиями к ИИ: решает человек, факт не равен отметке, история не переписывается, каждый видит только положенное.</li>
+      <li><b>ИИ — только там, где без него нельзя</b>Понять сказанное, найти похожее, собрать ответ. Напоминания, права, готовность и закрытие держатся на правилах — система работает, даже когда ИИ ошибается или недоступен.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═════════ ВКЛАДКА 3 — КАК ЭТО ЖИВЁТ ═════════ -->
 <section class="wrap panel" id="live" role="tabpanel" aria-labelledby="tab-live" hidden>
   <div class="live-head">
     <h2>Как это живёт</h2>
@@ -468,7 +550,7 @@ pre.code .n { font-weight: 600; }
   </div>
 </section>
 
-<!-- ═════════ ВКЛАДКА 3 — ПОДРОБНО ═════════ -->
+<!-- ═════════ ВКЛАДКА 4 — ПОДРОБНО ═════════ -->
 <section class="wrap panel" id="detail" role="tabpanel" aria-labelledby="tab-detail" hidden>
   <div class="layout">
     <nav class="toc" aria-label="Листы">
@@ -720,7 +802,7 @@ pre.code .n { font-weight: 600; }
 
     <section class="sheet" id="d-naf">
       <div class="sheet-head"><span class="sheet-no">ЛИСТ 8</span><h2>Опора на готовый каркас</h2></div>
-      <p>Проверенные решения берутся из каркаса ИИ-агентов NAF («Завод нейроагентов»): он служит эталоном, а ядро пишется на TypeScript.</p>
+      <p>Проверенные решения берутся из каркаса ИИ-агентов FAN («Фабрика нейроагентов»): он служит эталоном, а ядро пишется на TypeScript.</p>
       <div class="tbl"><table class="t">
         <thead><tr><th>Нужно здесь</th><th>Есть в каркасе</th></tr></thead>
         <tbody>
@@ -920,7 +1002,7 @@ new Enterprise(
   "use strict";
 
   // ── Вкладки ─────────────────────────────────────────────────────────────
-  var TABS = ["short", "live", "detail"];
+  var TABS = ["short", "processes", "live", "detail"];
 
   function select(id, opts) {
     opts = opts || {};
